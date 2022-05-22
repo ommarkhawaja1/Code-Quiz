@@ -7,6 +7,7 @@
 }
 body{
     background: #007bff;
+    text-align: center;
 }
 
 .start_btn button{
@@ -21,3 +22,10 @@ body{
     cursor: pointer;
 }
 
+button:hover {
+    background-color: gainsboro; 
+}
+
+button:active {
+    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+}
