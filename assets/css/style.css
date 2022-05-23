@@ -10,7 +10,7 @@ body{
     text-align: center;
 }
 
-.start_btn button{
+.start-btn, .next-btn {
     font-size: 25px;
     font-weight: 500;
     color: #007bff;
@@ -28,4 +28,8 @@ button:hover {
 
 button:active {
     box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
+}
+
+.hide {
+    display: none;
 }
