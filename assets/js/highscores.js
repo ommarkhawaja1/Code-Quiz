@@ -1,4 +1,4 @@
-//get item allEntries from localstorage 
+//get item allEntries from localstorage
 var allEntries = JSON.parse(localStorage.getItem("allEntries"));
 
 // sort entries so they appear in descending order
@@ -8,7 +8,7 @@ allEntries.sort((a, b) => (a.userScore < b.userScore) ? 1: -1)
 if (allEntries) {
   for (i = 0; i < allEntries.length; i++) {
     var userList = document.querySelector(".user-list")
-    var input = document.createElement('li'); 
+    var input = document.createElement('li');
     input.textContent = allEntries[i]['userInitials'] + "   ---   " + allEntries[i]['userScore']
     userList.appendChild(input)
   }
@@ -22,3 +22,5 @@ function clearScores() {
   document.querySelector(".answers").textContent = "";
   localStorage.removeItem("allEntries");
 }
+
+

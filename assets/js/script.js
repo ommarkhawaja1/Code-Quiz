@@ -1,5 +1,6 @@
 var startButton = document.querySelector(".start-btn");
 var nextButton = document.querySelector(".next-btn");
+var submitButton = document.querySelector(".submit-btn")
 var questionContainerElement = document.querySelector("#question-container");
 var timerElement = document.querySelector(".timer-count");
 var questionElement = document.querySelector("#question");
@@ -8,7 +9,6 @@ var shuffledQuestions, currentQuestionIndex;  //  will let us know which questio
 var timer;
 var score = new Array();
 var finalScore;
-var submit = document.querySelector("submit-btn");
 
 
 //  attaching an event listener to start button to call startGame function on click
@@ -88,7 +88,6 @@ function selectAnswer(e) {
     var selectedButton = e.target
     // check if the button is correct from the dataset
     var correct = selectedButton.dataset.correct
-    console.log(correct)
     // call the function to setStatusClass to correct or wrong
     if (correct) {
         score.push(true)
@@ -110,13 +109,18 @@ function selectAnswer(e) {
     }
     // if we run out of questions then we proceed through the following events
     else {
+
+        // run the saveResults function so that we can count the score
+        saveResults()
+
         // change start button to navigate to highscores page
         startButton.innerText = "Show Results"
         startButton.classList.remove("hide")
-        startButton = showResultsButton
+        startButton = "submit-btn"
+        console.log(startButton)
+        // submitButton.onClick = finalScoreScreen()
+        submitButton.addEventListener("click", finalScoreScreen)
 
-        // run the showResults function so that we can count the score
-        showResults()
     }
 }
 
@@ -138,22 +142,31 @@ function clearStatusClass(element) {
 }
 
 function finalScoreScreen() {
+    saveResults()
     window.location.href = "highscores.html";
-    showResults()
 
 }
 
-function showResults() {
+function saveResults() {
     // when the user selects the last answer, then count the amount of trues out of arraylength
     finalScore = score.filter(Boolean).length
     // store this score in local storage
-    localStorage.setItem(finalScore)
+    localStorage.setItem("final score", finalScore)
     console.log(finalScore)
 
+    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array
+    // get existing scores from local storage
+    // parse that data back into an array
+    // add score to this array
+    // put array back into local storage
+
+    //get allentries from localstorage OR an empty array if it doesn't exist 
+    // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
+
     // Save to localStorage and redirect to next page "score.html"
-    finalScore.push(highscores);
-    window.localStorage.setItem("highscores", JSON.stringify(highscores));
-    window.location.href = "highscore.html";
+    // finalScore.push(highscores);
+    // window.localStorage.setItem("highscores", JSON.stringify(highscores));
+
 
 }
 
@@ -206,5 +219,3 @@ var questions = [
         ]
     },
 ]
-
-submitBtn.addEventListener("click", saveHighscore)
