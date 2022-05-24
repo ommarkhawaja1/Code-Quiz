@@ -8,7 +8,7 @@ var shuffledQuestions, currentQuestionIndex;  //  will let us know which questio
 var timer;
 var score = new Array();
 var finalScore;
-var submitBtn = document.getElementById("submit");
+var submit = document.querySelector("submit-btn");
 
 
 //  attaching an event listener to start button to call startGame function on click
@@ -23,7 +23,7 @@ nextButton.addEventListener("click", () => {
 function startGame() {
     startButton.classList.add("hide");
     // This will give us a random question
-    shuffledQuestions = questions.sort(() => Math.random() -.5)
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0
     questionContainerElement.classList.remove("hide")
     // call the next question
@@ -39,7 +39,7 @@ function startTimer() {
         timerCount--;
         timerElement.textContent = timerCount;
 
-        // if the time = 0, then clear the timer and show the results
+        // if the time = 0, then clear the timer and navigate to highscores.html
         if (timerCount <= 0) {
             clearInterval(timer);
             finalScoreScreen()
@@ -106,21 +106,17 @@ function selectAnswer(e) {
     })
     // if we have more questions than we are currently on, then show the next button
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-    nextButton.classList.remove("hide")
+        nextButton.classList.remove("hide")
     }
+    // if we run out of questions then we proceed through the following events
     else {
         // change start button to navigate to highscores page
         startButton.innerText = "Show Results"
         startButton.classList.remove("hide")
         startButton = showResultsButton
 
-
+        // run the showResults function so that we can count the score
         showResults()
-
-        // Save to localStorage and redirect to next page "score.html"
-        highscores.push(finalScore);
-        window.localStorage.setItem("highscores", JSON.stringify(highscores));
-        window.location.href = "highscore.html";
     }
 }
 
@@ -142,16 +138,24 @@ function clearStatusClass(element) {
 }
 
 function finalScoreScreen() {
-
     window.location.href = "highscores.html";
     showResults()
 
 }
 
+function showResults() {
+    // when the user selects the last answer, then count the amount of trues out of arraylength
+    finalScore = score.filter(Boolean).length
+    // store this score in local storage
+    localStorage.setItem(finalScore)
+    console.log(finalScore)
 
-// if sttement for when time = 0, then show results and count tures out of arraylength
+    // Save to localStorage and redirect to next page "score.html"
+    finalScore.push(highscores);
+    window.localStorage.setItem("highscores", JSON.stringify(highscores));
+    window.location.href = "highscore.html";
 
-// function for submit score
+}
 
 
 // contains questions, answer choices, and correct answer
@@ -162,7 +166,7 @@ var questions = [
             { text: "{}", correct: false },
             { text: "()", correct: false },
             { text: "<>", correct: true },
-            { text: "[]", correct: false},
+            { text: "[]", correct: false },
         ]
     },
 
@@ -172,7 +176,7 @@ var questions = [
             { text: "<ul>", correct: false },
             { text: "<ol>", correct: true },
             { text: "<href>", correct: false },
-            { text: "<main>", correct: false},
+            { text: "<main>", correct: false },
         ]
     },
 
@@ -182,25 +186,25 @@ var questions = [
             { text: "The browser", correct: false },
             { text: "The DevTools Network tab", correct: true },
             { text: "The Fetch API", correct: false },
-            { text: "The curl command", correct: false},
+            { text: "The curl command", correct: false },
         ]
-    },    {
+    }, {
         question: "What is the correct HTML for making a radio button?",
         answers: [
             { text: "<radio>", correct: false },
             { text: "<radiobutton>", correct: false },
             { text: "<input type='radiobutton'>", correct: false },
-            { text: "<input type='radio'>", correct: true},
+            { text: "<input type='radio'>", correct: true },
         ]
-    },    {
+    }, {
         question: "Which Moment.js method would help us get how many days away a date is?",
         answers: [
             { text: ".isAfter()", correct: false },
             { text: ".auditTask()", correct: false },
             { text: "Math.abs(moment().isBefore()-moment().isAfter())", correct: false },
-            { text: ".diff", correct: true},
+            { text: ".diff", correct: true },
         ]
     },
 ]
 
-submitBtn.onclick = saveHighscore;
+submitBtn.addEventListener("click", saveHighscore)
