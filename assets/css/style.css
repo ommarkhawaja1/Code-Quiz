@@ -6,9 +6,16 @@
     font-family: 'Poppins', sans-serif;
 }
 body{
+    margin: 0;
     background: #007bff;
     text-align: center;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 .start-btn, .next-btn {
     font-size: 25px;
@@ -22,9 +29,40 @@ body{
     cursor: pointer;
 }
 
-button:hover {
-    background-color: gainsboro; 
+.container {
+    width: 800px;
+    max-width: 80%;
+    background-color: white;
+    border-radius:  5px;
+    padding: 10px;
+    box-shadow: 0 0 10px 2px;
 }
+
+.btn-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn {
+    border: 1px solid;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+button:hover {
+    background-color: gainsboro;
+}
+
+.btn.correct {
+    color: green
+}
+
+.btn.wrong {
+    color: red
+}
+
 
 button:active {
     box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
