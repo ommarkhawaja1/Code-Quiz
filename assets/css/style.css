@@ -17,7 +17,7 @@ body{
 }
 
 
-.start-btn, .next-btn {
+.start-btn, .next-btn, .submit-btn{
     font-size: 25px;
     font-weight: 500;
     color: #007bff;
@@ -54,6 +54,12 @@ body{
     background-color: beige;
     border-radius: 10px;
     
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button:hover {

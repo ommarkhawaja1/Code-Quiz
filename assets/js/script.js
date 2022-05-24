@@ -18,7 +18,7 @@ nextButton.addEventListener("click", () => {
     currentQuestionIndex++
     setNextQuestion()
 })
-
+submitButton.addEventListener("click", finalScoreScreen)
 
 function startGame() {
     startButton.classList.add("hide");
@@ -109,17 +109,9 @@ function selectAnswer(e) {
     }
     // if we run out of questions then we proceed through the following events
     else {
-
+        submitButton.classList.remove("hide")
         // run the saveResults function so that we can count the score
         saveResults()
-
-        // change start button to navigate to highscores page
-        startButton.innerText = "Show Results"
-        startButton.classList.remove("hide")
-        startButton = "submit-btn"
-        console.log(startButton)
-        // submitButton.onClick = finalScoreScreen()
-        submitButton.addEventListener("click", finalScoreScreen)
 
     }
 }
@@ -154,17 +146,14 @@ function saveResults() {
     localStorage.setItem("final score", finalScore)
     console.log(finalScore)
 
-    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array
-    // get existing scores from local storage
+    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array  
+    // get existing scores from local storage or create a new one if it doesn't exist
+      // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
+      
     // parse that data back into an array
     // add score to this array
     // put array back into local storage
 
-    //get allentries from localstorage OR an empty array if it doesn't exist 
-    // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
-
-    // Save to localStorage and redirect to next page "score.html"
-    // finalScore.push(highscores);
     // window.localStorage.setItem("highscores", JSON.stringify(highscores));
 
 
