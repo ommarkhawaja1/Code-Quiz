@@ -4,24 +4,26 @@ var questionContainerElement = document.querySelector("#question-container");
 var timerElement = document.querySelector(".timer-count");
 var questionElement = document.querySelector("#question");
 var answerButtonsElement = document.querySelector("#answer-buttons");
-var shuffledQuestions, currentQuestionIndex;
+var shuffledQuestions, currentQuestionIndex;  //  will let us know which question in the shuffledquestions that we are on
 var timer;
 
 
 //  attaching an event listener to start button to call startGame function on click
 startButton.addEventListener("click", startGame);
 nextButton.addEventListener("click", () => {
+    // increment to the next question
     currentQuestionIndex++
     setNextQuestion()
 })
 
 
 function startGame() {
-    console.log("started");
     startButton.classList.add("hide");
+    // This will give us a random question
     shuffledQuestions = questions.sort(() => Math.random() -.5)
     currentQuestionIndex = 0
     questionContainerElement.classList.remove("hide")
+    // call the next question
     setNextQuestion()
 
     timerCount = 40;
@@ -43,17 +45,22 @@ function startTimer() {
 };
 
 function setNextQuestion() {
+    // reset the question back to default state everytime we get a new question
     resetState()
+    // Make a call to showQuestion to get the shuffledquestion and show it at the current question index 
     showQuestion(shuffledQuestions[currentQuestionIndex])
 
 }
 
 function showQuestion(question) {
+    // show the question text
     questionElement.innerText = question.question
+    // This will create a button for each answer add the answer text for each button, and add the btn class to it
     question.answers.forEach(answer => {
         var button = document.createElement("button")
         button.innerText = answer.text
         button.classList.add("btn")
+        // if the answer is correct, then add a data attribute of correct to the button
         if (answer.correct) {
             button.dataset.correct = answer.correct
             console.log(question.correct)
@@ -64,7 +71,10 @@ function showQuestion(question) {
 }
 
 function resetState() {
+    clearStatusClass(document.body)
+    // hide the next button after we click the next button to get a new question
     nextButton.classList.add("hide")
+    // if there is a child inside the answerButtonsElement, then remove it
     while (answerButtonsElement.firstChild) {
         answerButtonsElement.removeChild(answerButtonsElement.firstChild)
     }
@@ -72,19 +82,26 @@ function resetState() {
 
 function selectAnswer(e) {
     var selectedButton = e.target
+    // check if the button is correct from the dataset
     var correct = selectedButton.dataset.correct
+    // call the function to setStatusClass to correct or wrong
     setStatusClass(document.body, correct)
+    // create an array from answerButtonsElement children for each button
     Array.from(answerButtonsElement.children).forEach(button => {
+        // set status of that button to correct
         setStatusClass(button, button.dataset.correct)
     })
+    // if we have more questions than we are currently on, then show the next button
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-    nextButton.classList.remove("hide")
-} else {
-    startButton.innerText.remove("hide")
-    startButton.classList.remove("hide")
-}
-}
+    nextButton.classList.remove("hide")    
+    // if we are on the last question, then show the start button with the inner text of restart
+// } else {
+//     startButton.innerText = "restart"
+//     startButton.classList.remove("hide")
+    }}
 
+
+// function to add correct or wrong class to answer button
 function setStatusClass(element, correct) {
     clearStatusClass(element)
     if (correct) {
@@ -94,11 +111,13 @@ function setStatusClass(element, correct) {
     }
 }
 
+// remove the StatusClass of correct/wrong from the answer buttons
 function clearStatusClass(element) {
     element.classList.remove("correct")
     element.classList.remove("wrong")
 }
 
+// contains questions, answer choices, and correct answer
 var questions = [
     {
         question: "How do we enclose an HTML tag",

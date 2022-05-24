@@ -42,13 +42,18 @@ body{
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: 10px;
-    margin: 20px 0;
+
 }
 
 .btn {
     border: 1px solid;
     gap: 10px;
     margin: 20px 0;
+    padding: 5px 10px;
+    outline: none;
+    background-color: beige;
+    border-radius: 10px;
+    
 }
 
 button:hover {
@@ -56,7 +61,7 @@ button:hover {
 }
 
 .btn.correct {
-    color: green
+    color: green;
 }
 
 .btn.wrong {
