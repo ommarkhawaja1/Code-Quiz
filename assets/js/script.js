@@ -6,6 +6,9 @@ var questionElement = document.querySelector("#question");
 var answerButtonsElement = document.querySelector("#answer-buttons");
 var shuffledQuestions, currentQuestionIndex;  //  will let us know which question in the shuffledquestions that we are on
 var timer;
+var score = new Array();
+var finalScore;
+var submitBtn = document.getElementById("submit");
 
 
 //  attaching an event listener to start button to call startGame function on click
@@ -28,7 +31,6 @@ function startGame() {
 
     timerCount = 40;
     startTimer();
-
 };
 
 
@@ -37,8 +39,10 @@ function startTimer() {
         timerCount--;
         timerElement.textContent = timerCount;
 
-        if (timerCount === 0) {
+        // if the time = 0, then clear the timer and show the results
+        if (timerCount <= 0) {
             clearInterval(timer);
+            finalScoreScreen()
         }
     }, 1000);
 
@@ -47,9 +51,8 @@ function startTimer() {
 function setNextQuestion() {
     // reset the question back to default state everytime we get a new question
     resetState()
-    // Make a call to showQuestion to get the shuffledquestion and show it at the current question index 
+    // Make a call to showQuestion to get the shuffledquestion and show it at the current question index
     showQuestion(shuffledQuestions[currentQuestionIndex])
-
 }
 
 function showQuestion(question) {
@@ -63,7 +66,7 @@ function showQuestion(question) {
         // if the answer is correct, then add a data attribute of correct to the button
         if (answer.correct) {
             button.dataset.correct = answer.correct
-            console.log(question.correct)
+            // console.log(question.correct)
         }
         button.addEventListener("click", selectAnswer)
         answerButtonsElement.appendChild(button)
@@ -81,10 +84,20 @@ function resetState() {
 }
 
 function selectAnswer(e) {
+
     var selectedButton = e.target
     // check if the button is correct from the dataset
     var correct = selectedButton.dataset.correct
+    console.log(correct)
     // call the function to setStatusClass to correct or wrong
+    if (correct) {
+        score.push(true)
+    }
+    else {
+        score.push(false)
+        timerCount -= 10;
+    }
+    console.log(score)
     setStatusClass(document.body, correct)
     // create an array from answerButtonsElement children for each button
     Array.from(answerButtonsElement.children).forEach(button => {
@@ -93,12 +106,23 @@ function selectAnswer(e) {
     })
     // if we have more questions than we are currently on, then show the next button
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
-    nextButton.classList.remove("hide")    
-    // if we are on the last question, then show the start button with the inner text of restart
-// } else {
-//     startButton.innerText = "restart"
-//     startButton.classList.remove("hide")
-    }}
+    nextButton.classList.remove("hide")
+    }
+    else {
+        // change start button to navigate to highscores page
+        startButton.innerText = "Show Results"
+        startButton.classList.remove("hide")
+        startButton = showResultsButton
+
+
+        showResults()
+
+        // Save to localStorage and redirect to next page "score.html"
+        highscores.push(finalScore);
+        window.localStorage.setItem("highscores", JSON.stringify(highscores));
+        window.location.href = "highscore.html";
+    }
+}
 
 
 // function to add correct or wrong class to answer button
@@ -117,11 +141,24 @@ function clearStatusClass(element) {
     element.classList.remove("wrong")
 }
 
+function finalScoreScreen() {
+
+    window.location.href = "highscores.html";
+    showResults()
+
+}
+
+
+// if sttement for when time = 0, then show results and count tures out of arraylength
+
+// function for submit score
+
+
 // contains questions, answer choices, and correct answer
 var questions = [
     {
         question: "How do we enclose an HTML tag",
-        answers: [ 
+        answers: [
             { text: "{}", correct: false },
             { text: "()", correct: false },
             { text: "<>", correct: true },
@@ -131,7 +168,7 @@ var questions = [
 
     {
         question: "How do you create an ordered list in HTML",
-        answers: [ 
+        answers: [
             { text: "<ul>", correct: false },
             { text: "<ol>", correct: true },
             { text: "<href>", correct: false },
@@ -141,7 +178,7 @@ var questions = [
 
     {
         question: "Which of these tools would NOT make a request to an API endpoint?",
-        answers: [ 
+        answers: [
             { text: "The browser", correct: false },
             { text: "The DevTools Network tab", correct: true },
             { text: "The Fetch API", correct: false },
@@ -149,7 +186,7 @@ var questions = [
         ]
     },    {
         question: "What is the correct HTML for making a radio button?",
-        answers: [ 
+        answers: [
             { text: "<radio>", correct: false },
             { text: "<radiobutton>", correct: false },
             { text: "<input type='radiobutton'>", correct: false },
@@ -157,7 +194,7 @@ var questions = [
         ]
     },    {
         question: "Which Moment.js method would help us get how many days away a date is?",
-        answers: [ 
+        answers: [
             { text: ".isAfter()", correct: false },
             { text: ".auditTask()", correct: false },
             { text: "Math.abs(moment().isBefore()-moment().isAfter())", correct: false },
@@ -166,4 +203,4 @@ var questions = [
     },
 ]
 
-
+submitBtn.onclick = saveHighscore;
