@@ -1,6 +1,7 @@
 var startButton = document.querySelector(".start-btn");
 var nextButton = document.querySelector(".next-btn");
 var submitButton = document.querySelector(".submit-btn")
+var nameField = document.querySelector("#username")
 var questionContainerElement = document.querySelector("#question-container");
 var timerElement = document.querySelector(".timer-count");
 var questionElement = document.querySelector("#question");
@@ -13,6 +14,9 @@ var finalScore;
 
 
 function startGame() {
+    nameField.classList.add("hide")
+    var name = document.querySelector("#username").value
+    localStorage.setItem("name", name)
     startButton.classList.add("hide");
     // This will give us a random question
     shuffledQuestions = questions.sort(() => Math.random() - .5)
@@ -23,6 +27,7 @@ function startGame() {
 
     timerCount = 40;
     startTimer();
+
 };
 
 
@@ -141,12 +146,19 @@ function saveResults() {
     // when the user selects the last answer, then count the amount of trues out of arraylength
     finalScore = score.filter(Boolean).length
 
-    var highscores = JSON.parse(localStorage.getItem("allEntries")) || [];
-
+    var highscores = JSON.parse(localStorage.getItem("highScores")) || [];
+    console.log(highscores)
     // store this score in local storage
     highscores.push(finalScore)
-    localStorage.setItem("final score", JSON.stringify(finalScore))
+    localStorage.setItem("finalScore", JSON.stringify(finalScore))
     console.log(finalScore)
+
+    var nameandscore = {
+        score: finalScore,
+        name: username.value
+    }
+    localStorage.setItem("nameandscore", JSON.stringify(nameandscore))
+    console.log(nameandscore)
 
     // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array
     // get existing scores from local storage or create a new one if it doesn't exist

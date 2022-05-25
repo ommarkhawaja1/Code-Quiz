@@ -17,7 +17,7 @@ body{
 }
 
 
-.start-btn, .next-btn, .submit-btn{
+.start-btn, .next-btn, .submit-btn, .clear-btn{
     font-size: 25px;
     font-weight: 500;
     color: #007bff;
@@ -73,7 +73,6 @@ button:hover {
 .btns.wrong {
     color: red
 }
-
 
 button:active {
     box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
