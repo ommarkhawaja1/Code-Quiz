@@ -95,6 +95,7 @@ function selectAnswer(e) {
     else {
         score.push(false)
         timerCount -= 10;
+        return;
     }
     console.log(score)
     setStatusClass(document.body, correct)
@@ -148,7 +149,7 @@ function saveResults() {
 
     // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array  
     // get existing scores from local storage or create a new one if it doesn't exist
-      // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
+      var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
       
     // parse that data back into an array
     // add score to this array
