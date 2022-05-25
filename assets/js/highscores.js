@@ -1,26 +1,31 @@
-//get item allEntries from localstorage
-var allEntries = JSON.parse(localStorage.getItem("allEntries"));
+var finalScore = JSON.parse(localStorage.getItem(finalScore));
+console.log(finalScore)
 
-// sort entries so they appear in descending order
-allEntries.sort((a, b) => (a.userScore < b.userScore) ? 1: -1)
-
-// if entries exist, print them on the screen in list format
-if (allEntries) {
-  for (i = 0; i < allEntries.length; i++) {
-    var userList = document.querySelector(".user-list")
-    var input = document.createElement('li');
-    input.textContent = allEntries[i]['userInitials'] + "   ---   " + allEntries[i]['userScore']
-    userList.appendChild(input)
+function printHighscores() {
+    // To get scores from localStorage or set it to empty array
+    var highscores = JSON.parse(window.localStorage.getItem("highscores")) || [];
+  
+    // Shorting the score by descending order
+    highscores.sort(function (a, b) {
+      return b.score - a.score;
+    });
+  
+    highscores.forEach(function (score) {
+      // Create li tag for each Score and displaying score on page/li
+      var liTag = document.createElement("li");
+      liTag.textContent = score.initials + " you scored - " + score.score;
+      var olEl = document.getElementById("highscores");
+      olEl.appendChild(liTag);
+    });
   }
-}
-
-// clear entries from screen
-var clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click", clearScores);
-
-function clearScores() {
-  document.querySelector(".answers").textContent = "";
-  localStorage.removeItem("allEntries");
-}
+  
+  function clearHighscores() {
+    window.localStorage.removeItem("highscores");
+    window.location.reload();
+  }
+  
+  document.getElementById("clear").onclick = clearHighscores;
+  
+  printHighscores();
 
 

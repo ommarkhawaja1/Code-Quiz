@@ -11,14 +11,6 @@ var score = new Array();
 var finalScore;
 
 
-//  attaching an event listener to start button to call startGame function on click
-startButton.addEventListener("click", startGame);
-nextButton.addEventListener("click", () => {
-    // increment to the next question
-    currentQuestionIndex++
-    setNextQuestion()
-})
-submitButton.addEventListener("click", finalScoreScreen)
 
 function startGame() {
     startButton.classList.add("hide");
@@ -62,7 +54,7 @@ function showQuestion(question) {
     question.answers.forEach(answer => {
         var button = document.createElement("button")
         button.innerText = answer.text
-        button.classList.add("btn")
+        button.classList.add("btns")
         // if the answer is correct, then add a data attribute of correct to the button
         if (answer.correct) {
             button.dataset.correct = answer.correct
@@ -83,19 +75,26 @@ function resetState() {
     }
 }
 
+
 function selectAnswer(e) {
 
     var selectedButton = e.target
     // check if the button is correct from the dataset
-    var correct = selectedButton.dataset.correct
     // call the function to setStatusClass to correct or wrong
+    var correct = selectedButton.dataset.correct
+
+    // disable the eselected answer button once it has been clicked
+    var selectAnswer = (e) => {
+        $('.btns').prop('disabled', true);
+    };
+    $(document).on('click', '.btns', selectAnswer);
+
     if (correct) {
         score.push(true)
     }
     else {
         score.push(false)
         timerCount -= 10;
-        return;
     }
     console.log(score)
     setStatusClass(document.body, correct)
@@ -113,10 +112,8 @@ function selectAnswer(e) {
         submitButton.classList.remove("hide")
         // run the saveResults function so that we can count the score
         saveResults()
-
     }
 }
-
 
 // function to add correct or wrong class to answer button
 function setStatusClass(element, correct) {
@@ -143,23 +140,24 @@ function finalScoreScreen() {
 function saveResults() {
     // when the user selects the last answer, then count the amount of trues out of arraylength
     finalScore = score.filter(Boolean).length
+
+    var highscores = JSON.parse(localStorage.getItem("allEntries")) || [];
+
     // store this score in local storage
-    localStorage.setItem("final score", finalScore)
+    highscores.push(finalScore)
+    localStorage.setItem("final score", JSON.stringify(finalScore))
     console.log(finalScore)
 
-    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array  
+    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array
     // get existing scores from local storage or create a new one if it doesn't exist
-      var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
-      
+    // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
+
     // parse that data back into an array
     // add score to this array
     // put array back into local storage
 
     // window.localStorage.setItem("highscores", JSON.stringify(highscores));
-
-
 }
-
 
 // contains questions, answer choices, and correct answer
 var questions = [
@@ -209,3 +207,15 @@ var questions = [
         ]
     },
 ]
+
+window.onload=function() {
+    var startButton = document.querySelector(".start-btn");
+    //  attaching an event listener to start button to call startGame function on click
+    startButton.addEventListener("click", startGame)
+    nextButton.addEventListener("click", () => {
+        // increment to the next question
+        currentQuestionIndex++
+        setNextQuestion()
+    })
+    submitButton.addEventListener("click", finalScoreScreen)
+}
