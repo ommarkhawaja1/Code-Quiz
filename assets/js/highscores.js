@@ -1,46 +1,21 @@
-var liTag = document.createElement("li")
-var username = document.querySelector("#username")
-var saveScoreBtn = document.querySelector("#submit-btn")
-var finalScore = document.querySelector("#finalScore")
-var mostRecentScore = localStorage.getItem("finalScore")
-var clearHighscores = document.querySelector(".clear")
+var clearButton = document.querySelector(".clear-btn");
+//get item allEntries from localstorage 
+var highscores = JSON.parse(localStorage.getItem("highScores"));
 
-var highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+// if entries exist, print them on the screen in list format
+if (highscores) {
+    console.log(highscores.length)
+  for (i = 0; i < highscores.length; i++) {
+    var userList = document.querySelector("#highscores")
+    var input = document.createElement('li'); 
+    input.textContent = highscores[i]['name'] + "   ---   " + highscores[i]['score']
+    userList.appendChild(input)
+  }
+}
 
-var finalScore = JSON.parse(localStorage.getItem(finalScore));
-console.log(localStorage)
-
-function saveHighScore() {
-
-    var score = {
-        score: mostRecentScore,
-        name: username.value
-    }
-
-    highscores.push(score)
-
-    highscores.sort(function (a, b) {
-        return b.score - a.score;
-      });
-
-    highscores.splice(5)
-    
-    localStorage.setItem("highScores", JSON.stringify(highscores))
-
-    highscores.forEach(function (score) {
-        // Create li tag for each Score and displaying score on page/li
-        var liTag = document.createElement("li");
-        liTag.textContent = score.name + " you scored - " + score.score;
-        var olEl = document.getElementById("highscores");
-        olEl.appendChild(liTag);
-
-        // one for name and one for score
-      });
-    }
-
-saveHighScore()
-
-document.getElementById("clear").onclick = clearHighscores;
-
-
-// create a for loop for items from localstorage and display it here
+function clearHighscores() {
+    window.localStorage.removeItem("highScores");
+    window.location.reload();
+  }
+  
+  clearButton.addEventListener("click", clearHighscores)

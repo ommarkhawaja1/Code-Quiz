@@ -40,6 +40,7 @@ function startTimer() {
         if (timerCount <= 0) {
             clearInterval(timer);
             finalScoreScreen()
+            saveResults()
         }
     }, 1000);
 
@@ -137,7 +138,7 @@ function clearStatusClass(element) {
 }
 
 function finalScoreScreen() {
-    saveResults()
+    // saveResults()
     window.location.href = "highscores.html";
 
 }
@@ -147,28 +148,17 @@ function saveResults() {
     finalScore = score.filter(Boolean).length
 
     var highscores = JSON.parse(localStorage.getItem("highScores")) || [];
-    console.log(highscores)
-    // store this score in local storage
-    highscores.push(finalScore)
-    localStorage.setItem("finalScore", JSON.stringify(finalScore))
-    console.log(finalScore)
+
+    
 
     var nameandscore = {
         score: finalScore,
         name: username.value
     }
-    localStorage.setItem("nameandscore", JSON.stringify(nameandscore))
-    console.log(nameandscore)
 
-    // write an if statement for if there is no items in localstorage, if array doesn't exist define a new array
-    // get existing scores from local storage or create a new one if it doesn't exist
-    // var existingEntries = JSON.parse(localStorage.getItem("allEntries")) || [];
-
-    // parse that data back into an array
-    // add score to this array
-    // put array back into local storage
-
-    // window.localStorage.setItem("highscores", JSON.stringify(highscores));
+    // save this score to a list of highscores
+    highscores.push(nameandscore)
+    localStorage.setItem("highScores", JSON.stringify(highscores))
 }
 
 // contains questions, answer choices, and correct answer
